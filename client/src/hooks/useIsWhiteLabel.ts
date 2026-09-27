@@ -1,12 +1,11 @@
-import { authClient } from "../lib/auth";
-
-const WHITE_LABEL_ORGANIZATIONS: Record<string, string> = { XQroMSqHm87DPcvFozpajPI7ufVdxta6: "/ruby.png" };
-
+// آی‌ریپورت: کل این نمونه سفیدبرچسب (white-label) است. بالادستِ Rybbit این را
+// per-organization و با نگاشتِ سخت‌کدشده نگه می‌داشت؛ چون این استقرار کاملاً
+// برندِ ماست، همیشه فعال است تا: (۱) لوگوی آی‌ریپورت همه‌جا نمایش داده شود،
+// (۲) فوتر «powered by Rybbit» و واترمارک‌ها/لینک‌های تبلیغاتی Rybbit همه‌جا پنهان شوند.
 export function useWhiteLabel() {
-  const { data: activeOrganization, isPending } = authClient.useActiveOrganization();
   return {
-    isWhiteLabel: !!WHITE_LABEL_ORGANIZATIONS[activeOrganization?.id || ""],
-    whiteLabelImage: WHITE_LABEL_ORGANIZATIONS[activeOrganization?.id || ""],
-    isPending,
+    isWhiteLabel: true,
+    whiteLabelImage: "/ireport/logo.svg",
+    isPending: false,
   };
 }
