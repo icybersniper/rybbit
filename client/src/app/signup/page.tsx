@@ -8,7 +8,7 @@ import { useExtracted } from "next-intl";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { addSite } from "../../api/admin/endpoints";
 import { RybbitLogo, RybbitTextLogo } from "../../components/RybbitLogo";
 
@@ -28,6 +28,14 @@ function SignupPageContent() {
   const { configs, isLoading: isLoadingConfigs } = useConfigs();
   useSetPageTitle("Signup");
   const t = useExtracted();
+
+  // آی‌ریپورت: ثبت‌نام فقط از پنل (با پیامک) انجام می‌شود، نه از فرم ایمیلِ رایبیت.
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.get("native") !== "1") {
+      window.location.replace("https://panel.ireport.ir");
+    }
+  }, []);
 
   const maxStep = IS_CLOUD ? 3 : 2;
   const [stepParam, setStepParam] = useQueryState("step", parseAsInteger);

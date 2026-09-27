@@ -8,7 +8,7 @@ import { Turnstile } from "@/components/auth/Turnstile";
 import { useExtracted } from "next-intl";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { RybbitTextLogo } from "../../components/RybbitLogo";
 import { SpinningGlobe } from "../../components/SpinningGlobe";
 import { useSetPageTitle } from "../../hooks/useSetPageTitle";
@@ -30,6 +30,16 @@ function LoginPage() {
   const [error, setError] = useState<string>();
   const [turnstileToken, setTurnstileToken] = useState<string>("");
   const router = useRouter();
+
+  // آی‌ریپورت: کاربر با «پیامک» در پنل وارد می‌شود، نه با ایمیل. فرم ایمیلِ رایبیت
+  // داخلی است و نباید دیده شود؛ اگر کسی مستقیم به اینجا رسید، به پنل هدایتش کن.
+  // ادمین برای ورودِ مستقیم می‌تواند از ?native=1 استفاده کند.
+  useEffect(() => {
+    const sp = new URLSearchParams(window.location.search);
+    if (sp.get("native") !== "1") {
+      window.location.replace("https://panel.ireport.ir");
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
